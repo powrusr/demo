@@ -1,4 +1,2 @@
 # demo
-gh cli demo
-lets upload to github
-
+material to demonstrate my power user :computer: skills :smiley::octocat:
