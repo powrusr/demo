@@ -1,2 +1,7 @@
 # demo
-material to demonstrate my power user :computer: skills :smiley::octocat:
+Duke Nukem's :smiley::octocat: DRY antics
+
+[bash](bash.md)
+[sed](sed.md)
+
+

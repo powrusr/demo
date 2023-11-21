@@ -61,7 +61,18 @@ there are 50 users, of whom 2 use bash
 - RS: record seperator
 - OFS: seperator at output time
 - ORS: output at end of every print statement, \n by default
+### custom FS OFS
 
+```bash
+awk 'BEGIN {FS=":"; OFS=","} { print $1,$2,$3,$4,$6,$7 }' /etc/passwd | sed -n '1,5p'
+"""
+root,x,0,0,/root,/bin/bash
+daemon,x,1,1,/usr/sbin,/usr/sbin/nologin
+bin,x,2,2,/bin,/usr/sbin/nologin
+sys,x,3,3,/dev,/usr/sbin/nologin
+sync,x,4,65534,/bin,/bin/sync
+"""
+```
 ### custom record seperator
 
 ```bash
