@@ -1,12 +1,16 @@
-# basics
-[html manual](https://www.gnu.org/software/gawk/manual/html_node/)
+# awk
 
-## begin-main-end block
+## basics
 
-### main
+[html manual](https://www.gnu.org/software/gawk/manual/html\_node/)
 
-- executed for each input record
+### begin-main-end block
 
+#### main
+
+* executed for each input record
+
+{% code fullWidth="false" %}
 ```bash
 # main block with search regex & printing record number and complete line ($0)
 awk -F: '/bin\/bash$/{ printf "%2d%s%s\n",NR,": ",$0 }' /etc/passwd
@@ -15,12 +19,13 @@ awk -F: '/bin\/bash$/{ printf "%2d%s%s\n",NR,": ",$0 }' /etc/passwd
 48: duke:x:1000:1000:duke,,,:/home/duke:/bin/bash
 # 
 ```
+{% endcode %}
 
-### begin
+#### begin
 
-- print headers
-- set FS variable
-- declare your own vars
+* print headers
+* set FS variable
+* declare your own vars
 
 ```bash
 awk 'BEGIN { FS=":" } /bin\/bash$/{ printf "%2d%s%5s%5d\n",NR,":",$1,$3}' /etc/passwd
@@ -28,8 +33,10 @@ awk 'BEGIN { FS=":" } /bin\/bash$/{ printf "%2d%s%5s%5d\n",NR,":",$1,$3}' /etc/p
  1: root    0
 48: duke 1000
 ```
-note the extra %s to account for the ":" 
 
+note the extra %s to account for the ":"
+
+{% code fullWidth="true" %}
 ```bash
 awk 'BEGIN { FS=":";COUNT=0 } /bin\/bash$/{ COUNT++; printf "%8s%2d%s%2d%s%5s%5d\n","row no: ",NR," count:",COUNT,":",$1,$3}' /etc/passwd
 
@@ -37,8 +44,9 @@ row no:  1 count: 1: root    0
 row no: 48 count: 2: duke 1000
 
 ```
+{% endcode %}
 
-### end
+#### end
 
 ```bash
 awk 'BEGIN {FS=":"; printf "%3s%12s%6s\n","No: ","Username","UID";COUNT=0} /bin\/bash/{COUNT++; printf "%4s%s%10s%6d\n",COUNT,": ",$1,$3;} END {print "there are " NR " users, of whom " COUNT " use bash"}' /etc/passwd
@@ -49,19 +57,19 @@ No:     Username   UID
 there are 50 users, of whom 2 use bash
 
 ```
-## special variables
 
-[controlling vars](https://www.gnu.org/software/gawk/manual/html_node/User_002dmodified.html)
-[other vars](https://www.gnu.org/software/gawk/manual/html_node/Auto_002dset.html)
-[Using ARGC and ARGV](https://www.gnu.org/software/gawk/manual/html_node/ARGC-and-ARGV.html)
+### special variables
 
-- NR: number of input records awk has processed since the beginning of the program’s execution
-- NF: The number of fields in the current input record. NF is set each time a new record is read, when a new field is created, or when $0 changes
-- FS: field seperator, defaults to a space " " (is set with -F flag)
-- RS: record seperator
-- OFS: seperator at output time
-- ORS: output at end of every print statement, \n by default
-### custom FS OFS
+[controlling vars](https://www.gnu.org/software/gawk/manual/html\_node/User\_002dmodified.html) [other vars](https://www.gnu.org/software/gawk/manual/html\_node/Auto\_002dset.html) [Using ARGC and ARGV](https://www.gnu.org/software/gawk/manual/html\_node/ARGC-and-ARGV.html)
+
+* NR: number of input records awk has processed since the beginning of the program’s execution
+* NF: The number of fields in the current input record. NF is set each time a new record is read, when a new field is created, or when $0 changes
+* FS: field seperator, defaults to a space " " (is set with -F flag)
+* RS: record seperator
+* OFS: seperator at output time
+* ORS: output at end of every print statement, \n by default
+
+#### custom FS OFS
 
 ```bash
 awk 'BEGIN {FS=":"; OFS=","} { print $1,$2,$3,$4,$6,$7 }' /etc/passwd | sed -n '1,5p'
@@ -73,7 +81,8 @@ sys,x,3,3,/dev,/usr/sbin/nologin
 sync,x,4,65534,/bin,/bin/sync
 """
 ```
-### custom record seperator
+
+#### custom record seperator
 
 ```bash
 #!/bin/awk -f
@@ -81,13 +90,13 @@ BEGIN { RS="\\n\\s*\\n" }
 $0 ~ pattern { print }
 ```
 
-## printf
+### printf
+
 printf allows for precise control of output
 
-[printf control letters](https://www.gnu.org/software/gawk/manual/html_node/Control-Letters.html)
-[printf examples](https://www.gnu.org/software/gawk/manual/html_node/Printf-Examples.html)
+[printf control letters](https://www.gnu.org/software/gawk/manual/html\_node/Control-Letters.html) [printf examples](https://www.gnu.org/software/gawk/manual/html\_node/Printf-Examples.html)
 
-## sprintf
+### sprintf
 
 sprintf.awk
 
@@ -106,12 +115,12 @@ awk -f sprintf.awk
 a b c d e f g h i j k l m n o p q r s t u v w x y z 
 ```
 
-## begin main end block
-```bash
+### begin main end block
 
+```bash
 ```
 
-## control structures
+### control structures
 
 note sprintf is same as printf but returns string that can be assigned to a variable
 
@@ -133,9 +142,9 @@ BEGIN {
 }
 ```
 
-# scripts
+## scripts
 
-## bash users report
+### bash users report
 
 ```bash
 #!/bin/awk -f
@@ -155,7 +164,7 @@ END {
 }
 ```
 
-## report users that logged in
+### report users that logged in
 
 ```bash
 !(/Never logged in/ || /^Username/ || /^root/) {
@@ -170,7 +179,7 @@ END {
 }
 ```
 
-## extract ip from failed ssh login
+### extract ip from failed ssh login
 
 ```bash
 #!/bin/awk -f
@@ -188,7 +197,7 @@ END {
 }
 ```
 
-## convert passwd to yaml
+### convert passwd to yaml
 
 ```bash
 BEGIN {
