@@ -10,16 +10,13 @@
 
 * executed for each input record
 
-{% code fullWidth="false" %}
 ```bash
 # main block with search regex & printing record number and complete line ($0)
 awk -F: '/bin\/bash$/{ printf "%2d%s%s\n",NR,": ",$0 }' /etc/passwd
 
  1: root:x:0:0:root:/root:/bin/bash
 48: duke:x:1000:1000:duke,,,:/home/duke:/bin/bash
-# 
 ```
-{% endcode %}
 
 #### begin
 
@@ -36,7 +33,6 @@ awk 'BEGIN { FS=":" } /bin\/bash$/{ printf "%2d%s%5s%5d\n",NR,":",$1,$3}' /etc/p
 
 note the extra %s to account for the ":"
 
-{% code fullWidth="true" %}
 ```bash
 awk 'BEGIN { FS=":";COUNT=0 } /bin\/bash$/{ COUNT++; printf "%8s%2d%s%2d%s%5s%5d\n","row no: ",NR," count:",COUNT,":",$1,$3}' /etc/passwd
 
@@ -44,7 +40,6 @@ row no:  1 count: 1: root    0
 row no: 48 count: 2: duke 1000
 
 ```
-{% endcode %}
 
 #### end
 
@@ -60,7 +55,6 @@ there are 50 users, of whom 2 use bash
 
 ### special variables
 
-<<<<<<< HEAD
 [controlling vars](https://www.gnu.org/software/gawk/manual/html\_node/User\_002dmodified.html) [other vars](https://www.gnu.org/software/gawk/manual/html\_node/Auto\_002dset.html) [Using ARGC and ARGV](https://www.gnu.org/software/gawk/manual/html\_node/ARGC-and-ARGV.html)
 
 * NR: number of input records awk has processed since the beginning of the program’s execution
@@ -71,7 +65,7 @@ there are 50 users, of whom 2 use bash
 * ORS: output at end of every print statement, \n by default
 
 #### custom FS OFS
-=======
+
 - NR: number of input records awk has processed since the beginning of the program’s execution
 - NF: The number of fields in the current input record. NF is set each time a new record is read, when a new field is created, or when $0 changes
 - FS: field seperator, defaults to a space " " (is set with -F flag)
@@ -80,7 +74,6 @@ there are 50 users, of whom 2 use bash
 - ORS: output at end of every print statement, \n by default
 
 ### custom FS OFS
->>>>>>> c2958fd (synching)
 
 ```bash
 awk 'BEGIN {FS=":"; OFS=","} { print $1,$2,$3,$4,$6,$7 }' /etc/passwd | sed -n '1,5p'
@@ -92,11 +85,7 @@ sys,x,3,3,/dev,/usr/sbin/nologin
 sync,x,4,65534,/bin,/bin/sync
 ```
 
-<<<<<<< HEAD
-#### custom record seperator
-=======
 ### custom record seperator
->>>>>>> c2958fd (synching)
 
 ```awk
 #!/bin/awk -f
@@ -104,15 +93,11 @@ BEGIN { RS="\\n\\s*\\n" }
 $0 ~ pattern { print }
 ```
 
-<<<<<<< HEAD
 ### printf
-=======
-## printf
->>>>>>> c2958fd (synching)
 
 printf allows for precise control of output
 
-[printf control letters](https://www.gnu.org/software/gawk/manual/html\_node/Control-Letters.html) [printf examples](https://www.gnu.org/software/gawk/manual/html\_node/Printf-Examples.html)
+[printf control letters](https://www.gnu.org/software/gawk/manual/html\_node/Control-Letters.html)[printf examples](https://www.gnu.org/software/gawk/manual/html\_node/Printf-Examples.html)
 
 ### sprintf
 
@@ -133,16 +118,9 @@ awk -f sprintf.awk
 a b c d e f g h i j k l m n o p q r s t u v w x y z 
 ```
 
-<<<<<<< HEAD
-### begin main end block
 
-```bash
-```
-
-### control structures
-=======
 ## control structures
->>>>>>> c2958fd (synching)
+
 
 note sprintf is same as printf but returns string that can be assigned to a variable
 
@@ -219,11 +197,9 @@ END {
 }
 ```
 
-<<<<<<< HEAD
 ### convert passwd to yaml
-=======
+
 then use this to block ips in a command like
->>>>>>> c2958fd (synching)
 
 ```bash
 for i in $(sudo journalctl -u ssh | awk -f ssh_failed_logins.awk); do
@@ -245,6 +221,7 @@ pattern: variable name of choice
 `awk -v pattern=duke -f pwdyaml.awk`
 
 ```awk
+#!/bin/awk -f
 BEGIN {
   FS=":";
   print "users: "
