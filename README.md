@@ -1,5 +1,5 @@
-# demo
+# docs
 
-powr usr docs :smiley:
+## Linux
 
 - [bash](bash/index.md)
