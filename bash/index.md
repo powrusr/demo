@@ -1,4 +1,4 @@
-# BASH tools documentation
+# TOC 
 
 - [find](find.md)
 - [sed](sed.md)
