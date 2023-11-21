@@ -1,8 +1,6 @@
-# BASH
+# find
 
-## find
-
-### regex & delete
+## regex & delete
 
 [posix extended regex](https://www.gnu.org/software/findutils/manual/html_node/find_html/posix_002dextended-regular-expression-syntax.html)
 
