@@ -1,7 +1,7 @@
 # demo
 Duke Nukem's :smiley::octocat: DRY antics
 
-[bash](bash.md)
-[sed](sed.md)
+- [bash](bash.md)
+- [sed](sed.md)
 
 
