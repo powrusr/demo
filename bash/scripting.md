@@ -79,6 +79,6 @@ convert_to_mp4 () {
 |   |  \|\|  | \-o [(\*\*)](https://mywiki.wooledge.org/BashFAQ/031#np2) | [[ -b $var || -c $var ]] && echo "$var is a device"               |
 | expression grouping  | (...)  | \\( ... \\) [(\*\*)](https://mywiki.wooledge.org/BashFAQ/031#np2) | [[ $var = img\* && ($var = \*.png || $var = \*.jpg) ]] &&<br>echo "$var starts with img and ends with .jpg or .png" |
 | Pattern matching   | \= (or \==)    | (not available) | [[ $name = a\* ]] || echo "name does not start with an 'a': $name"                                                  |
-[param expansion](https://www.gnu.org/software/bash/manual/html_node/Shell-Parameter-Expansion.html)
 | [RegularExpression](https://mywiki.wooledge.org/RegularExpression) matching | \=~ | (not available) | [[ $(date) =~ ^Fri\\ ...\\ 13 ]] && echo "It's Friday the 13th!"|
+
 
