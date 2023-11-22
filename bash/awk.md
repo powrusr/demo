@@ -68,15 +68,6 @@ there are 50 users, of whom 2 use bash
 * OFS: seperator at output time
 * ORS: output at end of every print statement, \n by default
 
-#### custom FS OFS
-
-- NR: number of input records awk has processed since the beginning of the program’s execution
-- NF: The number of fields in the current input record. NF is set each time a new record is read, when a new field is created, or when $0 changes
-- FS: field seperator, defaults to a space " " (is set with -F flag)
-- RS: record seperator
-- OFS: seperator at output time
-- ORS: output at end of every print statement, \n by default
-
 ### custom FS OFS
 
 ```bash
@@ -102,7 +93,8 @@ $0 ~ pattern { print }
 
 printf allows for precise control of output
 
-[printf control letters](https://www.gnu.org/software/gawk/manual/html\_node/Control-Letters.html)[printf examples](https://www.gnu.org/software/gawk/manual/html\_node/Printf-Examples.html)
+[printf control letters](https://www.gnu.org/software/gawk/manual/html\_node/Control-Letters.html)
+[printf examples](https://www.gnu.org/software/gawk/manual/html\_node/Printf-Examples.html)
 
 ### sprintf
 
@@ -149,7 +141,7 @@ BEGIN {
 }
 ```
 
-## scripts
+## examples
 
 ### bash users report
 
@@ -203,8 +195,6 @@ END {
         }
 }
 ```
-
-### convert passwd to yaml
 
 then use this to block ips in a command like
 
@@ -264,7 +254,7 @@ $0 ~ pattern {
 }
 ```
 ```bash
-awk -v pattern=duke -f bash/files/pwd2yml2.awk /etc/passwd
+awk -v pattern=duke -f bash/files/pwd2yml.awk /etc/passwd
 ```
 ```output
 users: 
