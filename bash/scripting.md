@@ -75,7 +75,7 @@ convert_to_mp4 () {
 |   |   # drop last 4 chars eg .avi\-le                                                                        | \-le                                                      | [[ 3 -le 8 ]] && echo "3 is less than or equal to 8"              |
 | \-eq                                                                        | \-eq                                                      | [[ 5 -eq 05 ]] && echo "5 equals 05"                              |
 |   | \-ne                                                                        | \-ne                                                      | [[ 6 -ne 20 ]] && echo "6 is not equal to 20"                     |
-| co   |nditional evaluation                                                      | &&                                                        | \-a [(\*\*)](https://mywiki.wooledge.org/BashFAQ/031#np2)         | [[ -n $var && -f $var ]] && echo "$var is a file"                                                                   |
+| conditional evaluation | && | \-a [(\*\*)](https://mywiki.wooledge.org/BashFAQ/031#np2)         | [[ -n $var && -f $var ]] && echo "$var is a file" |
 |   |  \|\|  | \-o [(\*\*)](https://mywiki.wooledge.org/BashFAQ/031#np2) | [[ -b $var || -c $var ]] && echo "$var is a device"               |
 | expression grouping  | (...)  | \\( ... \\) [(\*\*)](https://mywiki.wooledge.org/BashFAQ/031#np2) | [[ $var = img\* && ($var = \*.png || $var = \*.jpg) ]] &&<br>echo "$var starts with img and ends with .jpg or .png" |
 | Pattern matching   | \= (or \==)    | (not available) | [[ $name = a\* ]] || echo "name does not start with an 'a': $name"                                                  |
