@@ -1,17 +1,19 @@
-# functions
+# scripting
 
-## arguments
+## functions
 
-- $0 is reserved for the function's name
-- $# holds no of parameters passed to function
-- $* and $@ variables hold all parameters passed to function
-    - "$* expands to  "$1 $2 $n"
-    - "$@" expands to "$1" "$2" "$n"
-    - not quoted they are the same
+### arguments
 
-## returning values
+* $0 is reserved for the function's name
+* $# holds no of parameters passed to function
+* $\* and $@ variables hold all parameters passed to function
+  * "$\* expands to "$1 $2 $n"
+  * "$@" expands to "$1" "$2" "$n"
+  * not quoted they are the same
 
-- $? captures exit status function
+### returning values
+
+* $? captures exit status function
 
 ```bash
 my_function () {
@@ -22,6 +24,7 @@ my_function () {
 my_function
 echo $?
 ```
+
 ```output
 cool beans
 33
@@ -36,11 +39,12 @@ cool_function () {
 cool_result="$(cool_function)"
 echo $cool_result
 ```
+
 ```output
 cool beans
 ```
 
-## examples
+### examples
 
 ```bash
 die () {
@@ -57,28 +61,11 @@ convert_to_mp4 () {
   ffmpeg -i ./"$vid" -vcodec mpeg4 -acodec aac ./"$base".mp4
 }
 ```
-[param expansion](https://www.gnu.org/software/bash/manual/html_node/Shell-Parameter-Expansion.html)
 
-# testing
+[param expansion](https://www.gnu.org/software/bash/manual/html\_node/Shell-Parameter-Expansion.html)
 
-## table
+## testing
 
-| **Feature** | **new test** [[ | **old test** [  | **Example** |
-| -----| ---------| ------------| -- |
-| string comparison | \> | \\> [(\*)](https://mywiki.wooledge.org/BashFAQ/031#np) | [[ a > b ]] || echo "a does not come after b" |
-|  | < | \\< [(\*)](https://mywiki.wooledge.org/BashFAQ/031#np) | [[ az < za ]] && echo "az comes before za" |
-|  | \= (or \==) | \= | [[ a = a ]] && echo "a equals a" |
-|  | != | != | [[ a != b ]] && echo "a is not equal to b" |
-| integer comparison | \-gt | \-gt | [[ 5 -gt 10 ]] || echo "5 is not bigger than 10"|
-|   | \-lt | \-lt | [[ 8 -lt 9 ]] && echo "8 is less than 9" |
-|   | \-ge | \-ge | [[ 3 -ge 3 ]] && echo "3 is greater than or equal to 3"           |
-|   |   \-le | \-le | [[ 3 -le 8 ]] && echo "3 is less than or equal to 8"  |
-|   | \-eq | \-eq | [[ 5 -eq 05 ]] && echo "5 equals 05" |
-|   | \-ne | \-ne | [[ 6 -ne 20 ]] && echo "6 is not equal to 20" |
-| conditional evaluation | && | \-a [(\*\*)](https://mywiki.wooledge.org/BashFAQ/031#np2) | [[ -n $var && -f $var ]] && echo "$var is a file" |
-|   |  \|\|  | \-o [(\*\*)](https://mywiki.wooledge.org/BashFAQ/031#np2) | [[ -b $var || -c $var ]] && echo "$var is a device"               |
-| expression grouping  | (...)  | \\( ... \\) [(\*\*)](https://mywiki.wooledge.org/BashFAQ/031#np2) | [[ $var = img\* && ($var = \*.png || $var = \*.jpg) ]] &&<br>echo "$var starts with img and ends with .jpg or .png" |
-| Pattern matching   | \= (or \==)    | (not available) | [[ $name = a\* ]] || echo "name does not start with an 'a': $name" |
-| [RegularExpression](https://mywiki.wooledge.org/RegularExpression) matching | \=~ | (not available) | [[ $(date) =~ ^Fri\\ ...\\ 13 ]] && echo "It's Friday the 13th!"|
+### table
 
-
+<table data-header-hidden data-full-width="true"><thead><tr><th width="215.50000000000003"></th><th width="123"></th><th width="150"></th><th></th></tr></thead><tbody><tr><td><strong>Feature</strong></td><td><strong>new test</strong> [[</td><td><strong>old test</strong> [</td><td><strong>Example</strong></td></tr><tr><td>string comparison</td><td>></td><td>\> <a href="https://mywiki.wooledge.org/BashFAQ/031#np">(*)</a></td><td>[[ a > b ]] </td></tr><tr><td></td><td>&#x3C;</td><td>\&#x3C; <a href="https://mywiki.wooledge.org/BashFAQ/031#np">(*)</a></td><td>[[ az &#x3C; za ]] &#x26;&#x26; echo "az comes before za"</td></tr><tr><td></td><td>= (or ==)</td><td>=</td><td>[[ a = a ]] &#x26;&#x26; echo "a equals a"</td></tr><tr><td></td><td>!=</td><td>!=</td><td>[[ a != b ]] &#x26;&#x26; echo "a is not equal to b"</td></tr><tr><td>integer comparison</td><td>-gt</td><td>-gt</td><td>[[ 5 -gt 10 ]] </td></tr><tr><td></td><td>-lt</td><td>-lt</td><td>[[ 8 -lt 9 ]] &#x26;&#x26; echo "8 is less than 9"</td></tr><tr><td></td><td>-ge</td><td>-ge</td><td>[[ 3 -ge 3 ]] &#x26;&#x26; echo "3 is greater than or equal to 3"</td></tr><tr><td></td><td>-le</td><td>-le</td><td>[[ 3 -le 8 ]] &#x26;&#x26; echo "3 is less than or equal to 8"</td></tr><tr><td></td><td>-eq</td><td>-eq</td><td>[[ 5 -eq 05 ]] &#x26;&#x26; echo "5 equals 05"</td></tr><tr><td></td><td>-ne</td><td>-ne</td><td>[[ 6 -ne 20 ]] &#x26;&#x26; echo "6 is not equal to 20"</td></tr><tr><td>conditional evaluation</td><td>&#x26;&#x26;</td><td>-a <a href="https://mywiki.wooledge.org/BashFAQ/031#np2">(**)</a></td><td>[[ -n $var &#x26;&#x26; -f $var ]] &#x26;&#x26; echo "$var is a file"</td></tr><tr><td></td><td>||</td><td>-o <a href="https://mywiki.wooledge.org/BashFAQ/031#np2">(**)</a></td><td>[[ -b $var </td></tr><tr><td>expression grouping</td><td>(...)</td><td>\( ... \) <a href="https://mywiki.wooledge.org/BashFAQ/031#np2">(**)</a></td><td>[[ $var = img* &#x26;&#x26; ($var = *.png </td></tr><tr><td>Pattern matching</td><td>= (or ==)</td><td>(not available)</td><td>[[ $name = a* ]] </td></tr><tr><td><a href="https://mywiki.wooledge.org/RegularExpression">RegularExpression</a> matching</td><td>=~</td><td>(not available)</td><td>[[ $(date) =~ ^Fri\ ...\ 13 ]] &#x26;&#x26; echo "It's Friday the 13th!"</td></tr></tbody></table>
