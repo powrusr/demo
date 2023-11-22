@@ -13,7 +13,8 @@
 ```bash
 # main block with search regex & printing record number and complete line ($0)
 awk -F: '/bin\/bash$/{ printf "%2d%s%s\n",NR,": ",$0 }' /etc/passwd
-
+```
+```output
  1: root:x:0:0:root:/root:/bin/bash
 48: duke:x:1000:1000:duke,,,:/home/duke:/bin/bash
 ```
@@ -26,7 +27,8 @@ awk -F: '/bin\/bash$/{ printf "%2d%s%s\n",NR,": ",$0 }' /etc/passwd
 
 ```bash
 awk 'BEGIN { FS=":" } /bin\/bash$/{ printf "%2d%s%5s%5d\n",NR,":",$1,$3}' /etc/passwd
-
+```
+```output
  1: root    0
 48: duke 1000
 ```
@@ -35,22 +37,24 @@ note the extra %s to account for the ":"
 
 ```bash
 awk 'BEGIN { FS=":";COUNT=0 } /bin\/bash$/{ COUNT++; printf "%8s%2d%s%2d%s%5s%5d\n","row no: ",NR," count:",COUNT,":",$1,$3}' /etc/passwd
-
+```
+```output
 row no:  1 count: 1: root    0
 row no: 48 count: 2: duke 1000
-
 ```
 
 #### end
 
 ```bash
-awk 'BEGIN {FS=":"; printf "%3s%12s%6s\n","No: ","Username","UID";COUNT=0} /bin\/bash/{COUNT++; printf "%4s%s%10s%6d\n",COUNT,": ",$1,$3;} END {print "there are " NR " users, of whom " COUNT " use bash"}' /etc/passwd
-
+awk 'BEGIN {FS=":"; printf "%3s%12s%6s\n","No: ","Username","UID";COUNT=0} \
+/bin\/bash/{COUNT++; printf "%4s%s%10s%6d\n",COUNT,": ",$1,$3;} \
+END {print "there are " NR " users, of whom " COUNT " use bash"}' /etc/passwd
+```
+```output
 No:     Username   UID
    1:       root     0
    2:       duke  1000
 there are 50 users, of whom 2 use bash
-
 ```
 
 ### special variables
@@ -77,7 +81,8 @@ there are 50 users, of whom 2 use bash
 
 ```bash
 awk 'BEGIN {FS=":"; OFS=","} { print $1,$2,$3,$4,$6,$7 }' /etc/passwd | sed -n '1,5p'
-
+```
+```output
 root,x,0,0,/root,/bin/bash
 daemon,x,1,1,/usr/sbin,/usr/sbin/nologin
 bin,x,2,2,/bin,/usr/sbin/nologin
@@ -115,6 +120,8 @@ BEGIN {
 
 ```bash
 awk -f sprintf.awk 
+```
+```output
 a b c d e f g h i j k l m n o p q r s t u v w x y z 
 ```
 
@@ -220,6 +227,8 @@ pattern: variable name of choice
 
 `awk -v pattern=duke -f pwdyaml.awk`
 
+note: switch case is a gawk feature, install gawk first
+
 ```awk
 #!/bin/awk -f
 BEGIN {
@@ -253,4 +262,17 @@ $0 ~ pattern {
     }
   }
 }
+```
+```bash
+awk -v pattern=duke -f bash/files/pwd2yml2.awk /etc/passwd
+```
+```output
+users: 
+  - user: duke
+    password: x
+    uid: 1000
+    gid: 1000
+    gecos: duke,,,
+    home: /home/duke
+    shell: /bin/bash
 ```
