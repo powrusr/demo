@@ -73,7 +73,7 @@ convert_to_mp4 () {
 |   | \-lt                                                                        | \-lt                                                      | [[ 8 -lt 9 ]] && echo "8 is less than 9"                          |
 |   | \-ge                                                                        | \-ge                                                      | [[ 3 -ge 3 ]] && echo "3 is greater than or equal to 3"           |
 |   |   # drop last 4 chars eg .avi\-le                                                                        | \-le                                                      | [[ 3 -le 8 ]] && echo "3 is less than or equal to 8"              |
-| \-eq                                                                        | \-eq                                                      | [[ 5 -eq 05 ]] && echo "5 equals 05"                              |
+|   | \-eq                                                                        | \-eq                                                      | [[ 5 -eq 05 ]] && echo "5 equals 05"                              |
 |   | \-ne                                                                        | \-ne                                                      | [[ 6 -ne 20 ]] && echo "6 is not equal to 20"                     |
 | conditional evaluation | && | \-a [(\*\*)](https://mywiki.wooledge.org/BashFAQ/031#np2)         | [[ -n $var && -f $var ]] && echo "$var is a file" |
 |   |  \|\|  | \-o [(\*\*)](https://mywiki.wooledge.org/BashFAQ/031#np2) | [[ -b $var || -c $var ]] && echo "$var is a device"               |
