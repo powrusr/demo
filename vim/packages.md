@@ -9,6 +9,8 @@ packages need to have a start subfolder in that dir so
 
 ## git tool fugitive
 
+[vim-fugitive](https://github.com/tpope/vim-fugitive)
+
 ### install
 
 ```bash
