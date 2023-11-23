@@ -7,4 +7,4 @@
   * [scripting](bash/scripting.md)
   * [sed](bash/sed.md)
 * [python](python/README.md)
-  * [assert](python/assert.py)
+  * [assert](python/assert.md)
