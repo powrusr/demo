@@ -22,5 +22,7 @@ vim -u NONE -c "helptags fugitive/doc" -c q
 
 ```vim
 :Git status
-:Git add
+:Git add python/ vim/
+:Git commit
+:Git push
 ```

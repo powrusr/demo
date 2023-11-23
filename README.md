@@ -5,3 +5,4 @@ Hi! Welcome to my docs. Nice and simple markdown documentation for future refere
 ## Linux
 
 - [bash](bash/index.md)
+- [python](python/index.md)
