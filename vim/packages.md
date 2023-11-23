@@ -1,6 +1,6 @@
 # packages
 
-https://vimhelp.org/repeat.txt.html#packages
+- [vim packages](https://vimhelp.org/repeat.txt.html#packages)
 
 vim now has packages integrated since version 8
 folder is `~/.vim/pack/`
@@ -9,7 +9,7 @@ packages need to have a start subfolder in that dir so
 
 ## git tool fugitive
 
-[vim-fugitive](https://github.com/tpope/vim-fugitive)
+- [vim-fugitive](https://github.com/tpope/vim-fugitive)
 
 ### install
 
