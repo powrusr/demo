@@ -2,7 +2,7 @@
 
 ## installation
 
-https://docs.pytest.org
+[pytest docs](https://docs.pytest.org)
 
 ```bash
 pip install -U pytest
@@ -18,12 +18,38 @@ markers =
     slow: Run tests that use sample data from file (deselect with '-m "not slow"')
 ```
 
-## skip
+## skip & slow
 
 ```python
 @pytest.mark.skip("work in process")
 def test_some_new_feature():
     assert False # test should fail
+```
+
+```python
+@pytest.mark.slow
+def test_large_file(phonebook):
+    with open("test_data.txt") as f:
+        csv_reader = csv.DictReader(f)
+        for row in csv_reader:
+            name = row["Name"]
+            number = row["Phone Number"]
+            phonebook.add(name, number)
+    assert phonebook.is_consistent()
+```
+
+```python
+@pytest.mark.skipif(sys.version_info < (3, 6)
+reason=“requires python3.6 or higher”)
+def test_phonebook_contains_names():
+    phonebook = PhoneBook()
+    assert 'Bob' in phonebook.names()
+```
+
+
+```bash
+# run all tests except slow
+python -m pytest "not slow"
 ```
 
 ## fixtures
@@ -115,6 +141,20 @@ phonebook.lookup("Bob")
 ### conftest.py
 
 share fixtures across multiple files
+
+```python
+"""Shared fixtures"""
+
+import pytest
+
+from phonebook.phonenumbers import Phonebook
+
+
+@pytest.fixture
+def phonebook(tmpdir):
+    """Provides an empty Phonebook"""
+    return Phonebook(tmpdir)
+```
 
 ```python
 # content of tests/conftest.py
