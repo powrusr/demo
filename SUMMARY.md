@@ -11,3 +11,4 @@
   * [regex](python/regex.md)
 * [vim](vim/README.md)
   * [packages](vim/packages.md)
+  * [tips](vim/tips.md)
