@@ -8,5 +8,6 @@
   * [sed](bash/sed.md)
 * [python](python/README.md)
   * [assert](python/assert.md)
+  * [regex](python/regex.md)
 * [vim](vim/README.md)
   * [packages](vim/packages.md)
