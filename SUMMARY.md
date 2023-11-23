@@ -9,6 +9,7 @@
 * [python](python/README.md)
   * [assert](python/assert.md)
   * [regex](python/regex.md)
+  * [testing](python/testing.md)
 * [vim](vim/README.md)
   * [packages](vim/packages.md)
   * [tips](vim/tips.md)
