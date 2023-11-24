@@ -138,6 +138,15 @@ with pytest.raises(KeyError):
 phonebook.lookup("Bob")
 ```
 
+### capsys
+
+```python
+def test_print_fizzbuzz(capsys):
+    print_fizzbuzz(3)
+    captured_stdout = capsys.readouterr().out
+    assert captured_stdout == "1\n2\nFizz\n"
+```
+
 ### conftest.py
 
 share fixtures across multiple files
@@ -227,6 +236,30 @@ def test_is_consistent(phonebook, entry1, entry2, is_consistent):
     phonebook.add(*entry1)
     phonebook.add(*entry2)
     assert phonebook.is_consistent() == is_consistent
+
+
+@pytest.mark.parametrize(
+    "dice,expected_score",
+    [
+        ([1, 1, 2, 2, 2], 8),
+        ([5, 5, 6, 6, 6], 28),
+    ]
+)
+def test_full_house(dice, expected_score):
+    assert full_house(dice) == expected_score
+
+
+@pytest.mark.parametrize(
+    "dice,expected_categories", [
+        ((1, 2, 3, 4, 5),
+         [(15, 'large_straight'),(15, 'chance'),(14, 'small_straight'),(5, 'fives'), (4, 'fours'), (3, 'threes'), (2, 'twos'), (1, 'ones')]),
+        ((2, 2, 3, 3, 3),
+	[(13, 'full_house'), (13, 'chance'), (10, 'two_pairs'), (9, 'three_of_a_kind'), (9, 'threes'), (4, 'twos')]),
+        ((6, 6, 6, 6, 6),
+	[(50, 'yatzi'), (30, 'sixes'), (30, 'chance'), (24, 'four_of_a_kind'), (18, 'three_of_a_kind')]),
+    ])
+def test_scores_in_categories(dice, expected_categories):
+    assert [(score, fun.__name__) for (score, fun) in scores_in_categories(dice)] == expected_categories
 ```
 
 ### parametrize all test in module
@@ -264,4 +297,196 @@ def test_eval(test_input, expected):
 @pytest.mark.parametrize("y", [2, 3])
 def test_foo(x, y):
     pass
+```
+
+## test doubles
+
+### stubs
+
+- eg replace a remote sensor over network to measure tire pressure
+- simple strict control, no behaviour or logic is replaced
+- each test you setup needs a hard coded response
+
+make sensor object optional in initializer, so test double can be passed
+otherwise just call real sensor
+
+```python
+from sensor import Sensor
+
+
+class Alarm:
+
+    def __init__(self, sensor=None):
+        self._low_pressure_threshold = 17.0
+        self._high_pressure_threshold = 21.0
+        self._sensor = sensor or Sensor()
+        self._is_alarm_on = False
+
+--
+
+from unittest.mock import Mock
+
+from alarm import Alarm
+from sensor import Sensor
+
+
+def test_alarm_is_off_by_default():
+    alarm = Alarm()
+    assert not alarm.is_alarm_on
+
+# our stub
+class StubSensor:
+    def sample_pressure(self):
+        return 17.0
+
+
+def test_alarm_is_on_at_lower_threshold():
+    alarm = Alarm(StubSensor())
+    alarm.check()
+    assert alarm.is_alarm_on
+
+
+def test_alarm_is_on_at_higher_threshold():
+    stub = Mock(Sensor)   # these 2 lines are same as StubSensor class
+    stub.sample_pressure.return_value = 21.0
+    alarm = Alarm(stub)
+    alarm.check()
+    assert alarm.is_alarm_on
+```
+
+### fakes
+
+- has an implementation with logic & behaviour but is unsuitable for production:
+  - replace file operations with a StringIO collaborator
+  - replace real DB with in-memory database
+  - replace webserver with light-weight web server
+
+#### StringIO
+
+eg. because we can't wait testing some really big file
+
+```python
+import io
+
+from html_pages import HtmlPagesConverter
+
+
+def test_convert_second_page():
+    fake_file = io.StringIO("""\
+page one
+PAGE_BREAK
+page two
+PAGE_BREAK
+page three
+""")
+    converter = HtmlPagesConverter(fake_file)
+    converted_text = converter.get_html_page(1)
+    assert converted_text == "page two<br />"
+```
+
+### dummies
+
+- use of None or an empty collection, shouldn't be used
+
+### spies
+
+**spy records method calls it receives, so you can check correctness**
+**spy raises error afterwards in the assert**
+(mock will immediately raise one)
+
+- makes assertions on what happens, it can fail, a stub won't
+  1. assert a return value or an exception
+  2. test State change (API query)
+  3. check function/method got called
+
+eg using `Mock.assert_has_calls(expected_calls)`
+
+#### manual spy
+
+```python
+from unittest.mock import Mock, call
+
+from discounts import DiscountManager
+from model_objects import DiscountData, Product, User
+
+
+class SpyNotifier:
+    def __init__(self):
+        self.notified_users = []
+
+    def notify(self, user, message):
+        # don't send any messages from the unit test, record which users are notified
+        self.notified_users.append(user)
+
+
+def test_discount_for_users_with_spy():
+    notifier = SpyNotifier()
+    discount_manager = DiscountManager(notifier)
+    product = Product("headphones")
+    product.discounts = []
+    discount_details = DiscountData("10% off")
+    users = [User("user1", [product]), User("user2", [product])]
+
+    discount_manager.create_discount(product, discount_details, users)
+
+    assert product.discounts == [discount_details]
+    assert users[0] in notifier.notified_users
+    assert users[1] in notifier.notified_users
+```
+
+#### using unittest.mock spy
+
+```python
+def test_discount_for_users_with_mocking_framework_spy():
+    notifier = Mock()
+    discount_manager = DiscountManager(notifier)
+    product = Product("headphones")
+    product.discounts = []
+    discount_details = DiscountData("10% off")
+    users = [User("user1", [product]), User("user2", [product])]
+
+    discount_manager.create_discount(product, discount_details, users)
+
+    assert product.discounts == [discount_details]
+    expected_calls = [
+        call(users[0], f"You may be interested in a discount on this product! {product.name}"),
+        call(users[1], f"You may be interested in a discount on this product! {product.name}"),
+    ]
+    notifier.notify.assert_has_calls(expected_calls)
+```
+
+### mocks
+
+** a mock fails earlier in the test than a spy **
+- told in advance what methods will be called with what arguments
+- will raise error right away if call expectations aren't met
+
+```python
+class MockNotifier:
+    def __init__(self):
+        self.expected_user_notifications = []
+
+    def notify(self, user, message):
+        # don't send any messages from the unit test, check all notifications are expected
+        expected_user = self.expected_user_notifications.pop(0)
+        if user != expected_user:
+            raise RuntimeError(f"got notification message for unexpected user {user.name}, was expecting {expected_user.name} instead")
+
+    def expect_notification_to(self, user):
+        self.expected_user_notifications.append(user)
+
+
+def test_discount_for_users_with_mock():
+    notifier = MockNotifier()
+    discount_manager = DiscountManager(notifier)
+    product = Product("headphones")
+    product.discounts = []
+    discount_details = DiscountData("10% off")
+    users = [User("user1", [product]), User("user2", [product])]
+    notifier.expect_notification_to(users[0])
+    notifier.expect_notification_to(users[1])
+
+    discount_manager.create_discount(product, discount_details, users)
+
+    assert product.discounts == [discount_details]
 ```
