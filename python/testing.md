@@ -616,16 +616,16 @@ coverage help run
 coverage run --help
 ```
 
-run – Run a Python program and collect execution data.
-combine – Combine together a number of data files.
-erase – Erase previously collected coverage data.
-report – Report coverage results.
-html – Produce annotated HTML listings with coverage results.
-xml – Produce an XML report with coverage results.
-json – Produce a JSON report with coverage results.
-lcov – Produce an LCOV report with coverage results.
-annotate – Annotate source files with coverage results.
-debug – Get diagnostic information.
+- run – Run a Python program and collect execution data.
+- combine – Combine together a number of data files.
+- erase – Erase previously collected coverage data.
+- report – Report coverage results.
+- html – Produce annotated HTML listings with coverage results.
+- xml – Produce an XML report with coverage results.
+- json – Produce a JSON report with coverage results.
+- lcov – Produce an LCOV report with coverage results.
+- annotate – Annotate source files with coverage results.
+- debug – Get diagnostic information.
 
 ```bash
 python3 -m pip install coverage
