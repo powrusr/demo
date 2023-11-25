@@ -457,7 +457,7 @@ def test_discount_for_users_with_mocking_framework_spy():
 
 ### mocks
 
-** a mock fails earlier in the test than a spy **
+**a mock fails earlier in the test than a spy**
 - told in advance what methods will be called with what arguments
 - will raise error right away if call expectations aren't met
 
@@ -490,3 +490,180 @@ def test_discount_for_users_with_mock():
 
     assert product.discounts == [discount_details]
 ```
+
+## approval tests
+
+```bash
+pip install approvaltests
+pip install pytest-approvaltests
+pytest --approvaltests-use-reporter='PythonNative'
+```
+```python
+from approvaltests.approvals import verify
+
+
+def test_simple():
+    result = "Hello ApprovalTests"
+    verify(result)
+```
+
+pytest runner configuration:
+
+Additional Arguments: `--approvaltests-use-reporter'PythonNative'`
+
+create approval files in subdir through config file
+approvals_config.json
+
+```json
+{
+  "subdirectory": "approved_files"
+}
+```
+
+### verify string
+
+```python
+
+import approvaltests
+import pytest
+
+from model_objects import SpecialOfferType
+from receipt_printer import ReceiptPrinter
+
+
+def test_no_discount(teller, cart, toothbrush, apples):
+    teller.add_special_offer(SpecialOfferType.TEN_PERCENT_DISCOUNT, toothbrush, 10.0)
+    cart.add_item_quantity(apples, 2.5)
+
+    receipt = teller.checks_out_articles_from(cart)
+
+    approvaltests.verify(ReceiptPrinter().print_receipt(receipt))
+
+
+def test_ten_percent_discount(teller, cart, toothbrush):
+    teller.add_special_offer(SpecialOfferType.TEN_PERCENT_DISCOUNT, toothbrush, 10.0)
+    cart.add_item_quantity(toothbrush, 2)
+
+    receipt = teller.checks_out_articles_from(cart)
+
+    approvaltests.verify(ReceiptPrinter().print_receipt(receipt))
+```
+
+### best covering pairs
+
+`approvaltests.verify_best_covering_pairs()`
+
+```python
+import unittest
+
+import approvaltests
+
+from gilded_rose import Item, GildedRose
+
+
+def print_item(item):
+    return f"Item({item.name}, sell_in={item.sell_in}, quality={item.quality})"
+
+
+def update_quality_printer(args, result):
+    return f"{args} => {print_item(result)}\n"
+
+
+def test_update_quality():
+    names = ["foo", "Cottage Cheese", "Backstage tickets", "Magic Wand"]
+    sell_ins = [-1, 0, 1, 6, 11]
+    qualitys = [0, 1, 2, 48, 49, 50]
+
+    approvaltests.verify_best_covering_pairs(
+        update_quality_for_item,
+        [
+            names,
+            sell_ins,
+            qualitys
+        ],
+        formatter=update_quality_printer
+    )
+
+
+def update_quality_for_item(name, sell_in, quality):
+    item = Item(name, sell_in, quality)
+    items = [item]
+    gilded_rose = GildedRose(items)
+    gilded_rose.update_quality()
+    return item
+```
+
+```
+Testing an optimized 30/120 scenarios:
+
+['foo', -1, 0] => Item(foo, sell_in=-2, quality=0)
+['Cottage Cheese', 0, 0] => Item(Cottage Cheese, sell_in=-1, quality=2)
+['Backstage tickets', 1, 0] => Item(Backstage tickets, sell_in=0, quality=3)
+['Magic Wand', 6, 0] => Item(Magic Wand, sell_in=6, quality=0)
+...
+```
+### more advanced combination approvals
+
+[more combination approval code](https://github.com/approvals/ApprovalTests.Python/blob/main/approvaltests/combination_approvals.py)
+
+## coverage
+
+[coverage docs](https://coverage.readthedocs.io/)
+
+```bash
+coverage help
+coverage help run
+coverage run --help
+```
+
+run – Run a Python program and collect execution data.
+combine – Combine together a number of data files.
+erase – Erase previously collected coverage data.
+report – Report coverage results.
+html – Produce annotated HTML listings with coverage results.
+xml – Produce an XML report with coverage results.
+json – Produce a JSON report with coverage results.
+lcov – Produce an LCOV report with coverage results.
+annotate – Annotate source files with coverage results.
+debug – Get diagnostic information.
+
+```bash
+python3 -m pip install coverage
+
+coverage run -m pytest arg1 arg2 arg3
+
+$ coverage report -m
+Name                      Stmts   Miss  Cover   Missing
+-------------------------------------------------------
+my_program.py                20      4    80%   33-35, 39
+my_other_module.py           56      6    89%   17-23
+-------------------------------------------------------
+TOTAL                        76     10    87%
+
+
+# to view lines in html
+$ coverage html
+
+
+# to measure branch coverage:
+coverage run --branch myprog.py
+```
+
+### exclude branches
+
+```python
+def only_one_choice(x):
+    if x:
+        blah1()
+        blah2()
+    else:  # pragma: no cover
+        # x is always true.
+        blah3()
+```
+
+
+### pytest runner cov plugin
+
+[pytest-cov plugin docs](https://pytest-cov.readthedocs.io/en/latest/)
+
+
