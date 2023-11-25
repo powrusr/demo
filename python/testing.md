@@ -666,4 +666,130 @@ def only_one_choice(x):
 
 [pytest-cov plugin docs](https://pytest-cov.readthedocs.io/en/latest/)
 
+## monkeypatching
 
+dynamically change an attribute or some code at runtime
+
+```python
+# scorer.py
+def lookup_weather(location=None):
+    location = location or (59.3293, 18.0686)  # Stockholm default
+    days_forward = 0
+    params = {"latitude": location[0], "longitude": location[1], "days_forward": days_forward}
+    weather_app = "http://127.0.0.1:3005"
+    response = requests.get(weather_app + "/forecast", params=params)
+    if response.status_code != 200:
+        raise RuntimeError("Weather service unavailable")
+    forecast = response.json()
+    return bool(forecast["weather"]["main"] == "Sunny")
+
+---
+# test_scorer.py
+# replace a function in the request module
+class StubWeatherResponse:
+    def __init__(self):
+        self.status_code = 200
+
+    def json(self):
+        return {"weather": {"main": "Sunny"}}
+
+def test_lookup_weather_location(monkeypatch):
+    def stub_requests_get(*args, **kwargs):
+	return StubWeatherResponse()
+
+    monkeypatch.setattr(requests, "get", stub_request_get)
+    assert scorer.lookup_weather() == True  # now request in lookup_weather going through stub
+```
+
+## VCRpy & pytest-recording
+
+record request from api to a cassette 
+
+```python
+sudo apt-get install libyaml-dev
+
+pip3 install vcrpy
+
+# test
+python3 -c 'from yaml import CLoader'
+
+# Rebuild pyyaml with libyaml
+pip3 uninstall pyyaml
+pip3 --no-cache-dir install pyyaml
+```
+
+
+[VCR docs](https://vcrpy.readthedocs.io/en/latest/)
+
+VCR.py simplifies and speeds up tests that make HTTP requests. The first time you run code that is inside a VCR.py context manager or decorated function, VCR.py records all HTTP interactions that take place through the libraries it supports and serializes and writes them to a flat file (in yaml format by default). This flat file is called a cassette. When the relevant piece of code is executed again, VCR.py will read the serialized requests and responses from the aforementioned cassette file, and intercept any HTTP requests that it recognizes from the original test run and return the responses that corresponded to those requests. This means that the requests will not actually result in HTTP traffic, which confers several benefits including:
+
+The ability to work offline
+Completely deterministic tests
+Increased test execution speed
+If the server you are testing against ever changes its API, all you need to do is delete your existing cassette files, and run your tests again. VCR.py will detect the absence of a cassette file and once again record all HTTP interactions, which will update them to correspond to the new API
+
+### usage with pytest
+
+[pytest-recording](https://github.com/kiwicom/pytest-recording)
+[pytest-vcr](https://github.com/ktosiek/pytest-vcr)
+
+```python
+# scorer.py
+def lookup_weather(location=None):
+    location = location or (59.3293, 18.0686)  # Stockholm default
+    days_forward = 0
+    params = {"latitude": location[0], "longitude": location[1], "days_forward": days_forward}
+    weather_app = "http://127.0.0.1:3005"
+    response = requests.get(weather_app + "/forecast", params=params)
+    if response.status_code != 200:
+        raise RuntimeError("Weather service unavailable")
+    forecast = response.json()
+    return bool(forecast["weather"]["main"] == "Sunny")
+
+---
+# test-scorer.py
+
+@pytest.mark.vcr
+def test_lookup_weather_not_sunny():
+    location_bxl = (50.8505, 4.3488)
+    assert scorer.lookup_weather(location_bxl) == False
+```
+
+```python
+# test_lookup_weather_not_sunny.yaml
+
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.30.0
+    method: GET
+    uri: http://127.0.0.1:3005/forecast?latitude=50.8505&longitude=4.3488&days_forward=0
+  response:
+    body:
+      string: '{"days_forward":0.0,"latitude":50.8505,"longitude":4.3488,"todays_date":"2023-05-17T15:36:53.191147","weather":{"clouds":{"afternoon":100,"evening":75,"morning":100,"pre_dawn":50},"description":"moderate
+        snow","main":"Snow","precipitation":{"snow":{"afternoon":2.2,"evening":0.0,"morning":1.0,"pre_dawn":0.5,"total":3.7}},"temperature":{"average_daytime":"5","maximum":"8","minimum":"3"},"visibility":30,"wind":{"direction":244,"gust":1.18,"speed":0.62}}}
+
+        '
+    headers:
+      Connection:
+      - close
+      Content-Length:
+      - '459'
+      Content-Type:
+      - application/json
+      Date:
+      - Wed, 22 November 2023 13:36:53 GMT
+      Server:
+      - Werkzeug/2.3.4 Python/3.10
+    status:
+      code: 200
+      message: OK
+version: 1
