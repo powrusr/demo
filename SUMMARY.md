@@ -10,6 +10,7 @@
   * [assert](python/assert.md)
   * [dataclass](python/dataclass.md)
   * [functional](python/functional.md)
+  * [generator](python/generator.md)
   * [regex](python/regex.md)
   * [testing](python/testing.md)
 * [vim](vim/README.md)

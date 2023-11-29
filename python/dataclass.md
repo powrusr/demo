@@ -51,6 +51,7 @@ city: str = field(repr=False)
 
 # don't include property in comparing 2 objects
 city: str = field(compare=False)
+
 # metadata = dictionary w extra info on field
 age: int =field(metadata={'format': 'year'})
 
@@ -92,7 +93,7 @@ s = Student('Joe', 'Berlin', 30, 10, ['maths', 'physics'])
 # common params will be overwritten by Student in this example
 ```
 
-### asdict, astuple
+## asdict, astuple
 
 ```python
 @dataclass
@@ -148,8 +149,8 @@ Setting a field’s type to InitVar (with its subtype being the actual field typ
 """
 
 ingredients: List = field(default_factory=['dow', 'tomatoes'])  # <- wrong!
-# Also an error to specify both default and default_factory.
 ingredients: List = field(default_factory=lambda: ['dow', 'tomatoes'])  # correct
+# error to specify both default and default_factory.
 
 from dataclasses import dataclass, field, InitVar
 from typing import List
