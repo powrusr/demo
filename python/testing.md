@@ -733,6 +733,14 @@ If the server you are testing against ever changes its API, all you need to do i
 [pytest-recording](https://github.com/kiwicom/pytest-recording)
 [pytest-vcr](https://github.com/ktosiek/pytest-vcr)
 
+```
+# run/debug configuration in pycharm, add record mode flag
+
+# Additional Arguments:
+--approvaltests-use-reporter='PythonNative' --record-mode=once
+# this will record them the first time and then replay that
+```
+
 ```python
 # scorer.py
 def lookup_weather(location=None):
