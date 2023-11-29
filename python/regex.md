@@ -22,9 +22,9 @@ if match:
     print(match.start())  # 4   -> returns start of first match
     print(match.end())    # 7   -> returns end of first match
     print(match.span())   # (4, 7) -> returns start & end of first match as tuple
-	print(match.string)   # eggspamsausage -> returns string passed into function
-	
-	
+    print(match.string)   # eggspamsausage -> returns string passed into function
+
+
 # re.sub
 str = "My name is David. Hi David."
 pattern = r"David"
@@ -123,7 +123,7 @@ if match:
 \b(cat)\b" basically matches the word "cat" surrounded by word boundaries
 """
 
-str = "Please contact info@sololearn.com for assistance"
+str = "Please contact info@learn.com for assistance"
 pattern = r"([\w\.-]+)@([\w\.-]+)(\.[\w\.]+)"
 
 ```
