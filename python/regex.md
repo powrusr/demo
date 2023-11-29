@@ -207,5 +207,27 @@ re.sub(pattern,replacement,string)
 ## examples
 
 ```python
+import re
 
+def remove_punctuation(word):
+    return re.sub(r'[!?.:;,"()-]', "", word)
+
+remove_punctuation("...Python!")
+# 'Python'
+
+text = """Some people, when confronted with a problem, think
+"I know, I'll use regular expressions."
+Now they have two problems. Jamie Zawinski"""
+
+words = text.split()
+words
+['Some', 'people,', 'when', 'confronted', 'with', 'a', 'problem,', 'think'
+, '"I', 'know,', "I'll", 'use', 'regular', 'expressions."', 'Now', 'they',
+ 'have', 'two', 'problems.', 'Jamie', 'Zawinski']
+
+list(map(remove_punctuation, words))
+
+['Some', 'people', 'when', 'confronted', 'with', 'a', 'problem', 'think',
+'I', 'know', "I'll", 'use', 'regular', 'expressions', 'Now', 'they', 'have
+', 'two', 'problems', 'Jamie', 'Zawinski']
 ```
