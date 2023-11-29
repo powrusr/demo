@@ -8,6 +8,7 @@
   * [sed](bash/sed.md)
 * [python](python/README.md)
   * [assert](python/assert.md)
+  * [dataclass](python/dataclass.md)
   * [functional](python/functional.md)
   * [regex](python/regex.md)
   * [testing](python/testing.md)
