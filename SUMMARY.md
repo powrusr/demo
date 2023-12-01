@@ -18,5 +18,4 @@
   * [tips](vim/tips.md)
 * projects
   * python
-	* [filename cleaner](projects/python/renamer/recursively_rename.py)
-	* [filename cleaner tests](projects/python/renamer/tests/test_recursively_rename.py)
+	* [filename cleaner](projects/python/renamer/renamer.md)
