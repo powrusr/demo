@@ -21,3 +21,4 @@
 * projects
   * python
 	* [filename cleaner](projects/python/renamer/renamer.md)
+	* [log watcher](projects/python/logbot/watch.md)

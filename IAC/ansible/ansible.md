@@ -1,3 +1,10 @@
+# ansible
+## folder structure
+
+```bash
+
+```
+
 ## servers.yml
 
 ```yaml
