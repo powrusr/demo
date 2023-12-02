@@ -123,6 +123,14 @@ done
 
 # substitute
 
+## ignore case
+
+```bash
+sed -E -i 's/something/else/Ig' file.py
+
+# test with grep -i "something" file.py
+```
+
 ## backreferences
 
 ```bash

@@ -6,7 +6,7 @@ import pathlib
 @pytest.mark.parametrize("given, expected", [
     ("[ Course.com ] Learning - Learning Radio", "[ ] Learning - Learning Radio"),
     ("[[CoursesOnline.OrG]] Terraform - Getting Started", "[[]] Terraform - Getting Started"),
-    ("[ CourseWikia.com ] Linkedin - Learning Rsync", "[ ] Linkedin - Learning Rsync")
+    ("[ coursesonline.com ] Linkedin - Learning Rsync", "[ ] Linkedin - Learning Rsync")
 ])
 def test_clr_domains(given: str, expected: str):
     assert recursively_rename.clr_domains(line=given) == expected
@@ -121,9 +121,10 @@ def test_clr_filesize(given: str, expected: str):
     ("very super long length line to really like over do it, that its become ridiculous haha seriously bruh",
      "very_super_long_length_line_to_really_like_over_do_it_that_its_become_ridic"),
     ("[[CoursesOnline.OrG]] Terraform - Getting Started", "Terraform_Getting_Started"),
-    ("[ CourseWikia.com ] Linkedin - Learning Rsync", "Learning_Rsync"),
+    ("[ coursesonline.com ] Linkedin - Learning Rsync", "Learning_Rsync"),
     ("2 - (A)synchronous Python", "2_Asynchronous_Python"),
     ("Butchers.Crossing.2023.720p...", "Butchers.Crossing.2023")
 ])
 def test_clean_all(given: str, expected: str):
     assert recursively_rename.clean_stem(line=given) == expected
+

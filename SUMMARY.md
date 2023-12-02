@@ -13,6 +13,8 @@
   * [generator](python/generator.md)
   * [regex](python/regex.md)
   * [testing](python/testing.md)
+* IAC
+  * [ansible](IAC/ansible/ansible.md)
 * vim
   * [packages](vim/packages.md)
   * [tips](vim/tips.md)
