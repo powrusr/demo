@@ -1,6 +1,5 @@
 # Table of contents
 
-* [docs](README.md)
 * bash
   * [awk](bash/awk.md)
   * [find](bash/find.md)
