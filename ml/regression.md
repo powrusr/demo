@@ -8,24 +8,19 @@ linear
 links
 -----
 
--   <https://scikit-learn.org/stable/modules/linear_model.html>
--   <https://scikit-learn.org/stable/user_guide.html>
--   <https://scikit-learn.org/stable/modules/generated/sklearn.metrics.r2_score.html#sklearn.metrics.r2_score>
+- <https://scikit-learn.org/stable/modules/linear_model.html>
+- <https://scikit-learn.org/stable/user_guide.html>
+- <https://scikit-learn.org/stable/modules/generated/sklearn.metrics.r2_score.html#sklearn.metrics.r2_score>
 
 files
 -----
 
-::: {.only}
-builder\_html or readthedocs
-
-download csv `here <files/csv/Advertising.csv>`{.interpreted-text
-role="download"}
-:::
+download csv [here](../files/csv/Advertising.csv)
 
 generalized flow
 ----------------
 
-``` {.python}
+```python
 from sklearn.model_family import ModelAlgo
 
 # create instance of that model
@@ -71,7 +66,7 @@ volume (y)?
 
 calculate averages = x̅, y̅
 
-``` {.}
+```
 x    y   x-x̅  y-y̅  (x-x̅)(y-y̅)  (x-x̅)²
 34  102  -6   -32     192        36   b1 = 558/124 = 4.5
 35  109  -5   -25     125        25   b0 = 134 - (4.5 x 40) = -46
@@ -91,7 +86,7 @@ minimizing a cost function with gradient descent
 
 gradient descent = minimization of cost function
 
-``` {.}
+```
 n
 y̅ = E    Bi.Xi
 i=0
@@ -103,26 +98,26 @@ J = cost function divide by m to get the mean
 
 all rows (residual error ² (minimize squared error))
 
-``` {.}
+```
 err between real y & predicted y̅
-m                     |
+               m                     |
 J(B) = 1/2m . E  . (y^j - y̅^j)²  <----
-j=1
+             j=1
 ```
 
 gradient = omgekeerde driehoek
 
 X:
 
-:   matrix X of all the features datapoints
+   matrix X of all the features datapoints
 
 Y:
 
-:   vector of all the known y labels
+   vector of all the known y labels
 
 B:
 
-:   vector of beta coefficients to minimize the gradient descent aka
+   vector of beta coefficients to minimize the gradient descent aka
     derivative aka minim of cost function)
 
 cost function calculation in python
@@ -130,7 +125,7 @@ cost function calculation in python
 prepend x vector with a vector of 1\'s (multiplying matrices you need
 correct dimensions)
 
-``` {.python}
+```python
 inner = np.power(((X @ theta.T) - y, 2)
 ```
 
@@ -143,7 +138,7 @@ using polyfit to calculate beta coefficients
 
 ### np.polyfit
 
-``` {.python}
+```python
 import pandas as pd
 import numpy as np
 import seaborn as sns
@@ -177,7 +172,7 @@ lin regression)
 
 ![image](../files/img/ml_cost_functions.png)
 
-``` {.python}
+```python
 plt.clf()
 plt.plot(potential_spend, predicted_sales)  # our lin regression line
 sns.scatterplot(data=df, x='total_spend', y='sales')
@@ -186,14 +181,14 @@ plt.show()
 
 ![image](../files/img/ml_ads_scatter1.png)
 
-``` {.python}
+```python
 ad_spend = 200
 predicted_sale = beta1 * ad_spend + beta0
 print(predicted_sale)
 # for an ad spend of 200usd = 13.98060407984596 units
 ```
 
-``` {.python}
+```python
 betas = np.polyfit(X, y, deg=3)  # y = B3x³ + B2*x² + B1x + B0
 b3, b2, b, y_intercept = betas[0], betas[1], betas[2], betas[3]
 pot_spend = np.linspace(0, 500, 100)
@@ -207,7 +202,7 @@ plt.show()
 
 ![image](../files/img/ml_ads_polynomial_scatter.png)
 
-``` {.python}
+```python
 plt.clf()
 sns.pairplot(df)
 plt.show()
@@ -215,7 +210,7 @@ plt.show()
 
 ![image](../files/img/ml_ads_pairplot.png)
 
-``` {.python}
+```python
 plt.clf()
 fig, axes = plt.subplots(nrows=1, ncols=3, figsize=(16,6))
 
@@ -239,7 +234,7 @@ plt.show()
 train\_test\_split
 ------------------
 
-``` {.python}
+```python
 # store features as X by just dropping the label|target "sales"
 df = df.drop(['Unnamed: 0','total_spend'], axis=1)
 X = df.drop("sales", axis=1)
@@ -264,28 +259,17 @@ model.fit(X_train, y_train)  # returns model object: LinearRegression()
 # print(len(X_train))  # 140
 ```
 
-::: {.note}
-::: {.title}
-Note
-:::
-
 regression is a task when a model attempts to predict continuous values
 (eg sales) unlike categorical values, which is classification (eg
 predict country given a house its features) there are no in between
 values for separate countries
-:::
 
-::: {.note}
-::: {.title}
-Note
-:::
 
 a RMSE for your label of 10€ is great for a house, not for a candy bar
 context is important compare your error metric to the average value of
 the label
-:::
 
-``` {.python}
+```python
 X_test.head()
 test_predictions = model.predict(X_test)
 
@@ -299,7 +283,7 @@ plt.show()
 
 ![image](../files/img/ml_ads_histplot_lin.png)
 
-``` {.python}
+```python
 # https://numpy.org/doc/stable/reference/generated/numpy.tril.html
 plt.clf()
 mask = np.tril(df.corr())
@@ -312,7 +296,7 @@ plt.show()
 error metrics
 -------------
 
-``` {.python}
+```python
 # mean absolute error
 print(mean_absolute_error(y_test, test_predictions))  # 1.213745773614481
 
@@ -339,7 +323,7 @@ print(test_sales)  # 11.01006995548518
 evaluate residuals
 ------------------
 
-``` {.python}
+```python
 # evaluate residuals (y-ŷ)
 
 # residual plot showing a clear pattern = lin regression not valid
@@ -352,7 +336,7 @@ plt.axhline(y=0, color='r', ls='--')  # make sure there's no clear line or curve
 
 ![image](../files/img/ml_ads_residuals_scatterplot.png)
 
-``` {.python}
+```python
 # distribution plot
 sns.displot(test_residuals, bins=25, kde=True)
 plt.show()
@@ -360,7 +344,7 @@ plt.show()
 
 ![image](../files/img/ml_ads_distplot_testresid.png)
 
-``` {.python}
+```python
 # probability plot
 import scipy as sp
 fig, ax = plt.subplots(figsize=(6,8), dpi=100)
@@ -373,7 +357,7 @@ plt.show()
 deploying model
 ---------------
 
-``` {.python}
+```python
 # loading & saving the model
 final_model = LinearRegression()
 final_model.fit(X, y)  # full dataset
@@ -389,20 +373,20 @@ loaded_model = load("final_sales_model.joblib")
 interpreting coefs
 ------------------
 
-``` {.python}
+```python
 # interpreting the coefficients
 # beta coefs tv radio newspaper
 print(final_model.coef_)
 [ 0.04576465  0.18853002 -0.00103749]
 ```
 
--   0 when your spend has no effect on sales
--   for every 1 unit TV feature so eg 231.1 (x1000usd) we expect a sales
+- 0 when your spend has no effect on sales
+- for every 1 unit TV feature so eg 231.1 (x1000usd) we expect a sales
     increase of 0.0457 units
--   for every 1000\$ spend on radio ads we expect 188 more units sold
--   looks like we should drop radio feature
+- for every 1000\$ spend on radio ads we expect 188 more units sold
+- looks like we should drop radio feature
 
-``` {.python}
+```python
 # plotting true points vs predicted points
 y_hat = final_model.predict(X)
 plt.clf()
@@ -430,7 +414,7 @@ plt.show()
 prediction test
 ---------------
 
-``` {.python}
+```python
 # predict for a new ad campaign
 # check dimensions
 X.shape  # (200, 3)
@@ -464,7 +448,7 @@ create polynomial features
 automatically creates both higher order feature polynomials & the
 interaction terms between all feature combos
 
-``` {.python}
+```python
 import pandas as pd
 import numpy as np
 import seaborn as sns
@@ -508,7 +492,7 @@ poly_features = polynomial_converter.fit_transform(X)
 
 ### train and evaluate
 
-``` {.python}
+```python
 polynomial_converter = PolynomialFeatures(degree=2, interaction_only=False, include_bias=False)
 
 # grab & analyze feature values
@@ -568,16 +552,16 @@ variance trade-off aka overfitting vs underfitting
 
 example of a model that overfits to a data set
 
-:   -   fits too much to the noise & variance in the training data
-    -   will perform very well on training data but have poor
-        performance on new unseen (test) data
-    -   is harder to detect
+- fits too much to the noise & variance in the training data
+- will perform very well on training data but have poor
+    performance on new unseen (test) data
+- is harder to detect
 
 example of a model that underfits to a data set
 
-:   -   model has high bias and is generalizing too much
-    -   underfitting can lead to poor performance in both training &
-        testing data sets
+- model has high bias and is generalizing too much
+- underfitting can lead to poor performance in both training &
+    testing data sets
 
 plot out Error vs Model complexity on training set then check
 performance on the test set
@@ -592,7 +576,7 @@ degrees train them, calculate error metrics for both training & test
 data then visually see where we begin to spike on the test error & where
 we continue to decline on the training error
 
-``` {.python}
+```python
 # create the different order polynomial
 train_rmse_errors = []
 test_rmse_errors = []
@@ -655,7 +639,7 @@ AND the model itself. Let\'s explore how we would proceed from here:
 3.  Save Polynomial Converter object
 4.  Save model
 
-``` {.python}
+```python
 # Based on our chart, could have also been degree=4, but 
 # it is better to be on the safe side of complexity
 final_poly_converter = PolynomialFeatures(degree=3,include_bias=False)
@@ -675,7 +659,7 @@ dump(final_poly_converter,'poly_converter.joblib')
 
 ### prediction on new data
 
-``` {.python}
+```python
 # prediction on new data
 loaded_poly = load('poly_converter.joblib')
 loaded_model = load('sales_poly_model.joblib')
@@ -697,61 +681,49 @@ regularization
 
 regularization methods have a cost:
 
--   introduce an additional hyperparameter that needs to be tuned
--   a multiplier to the penalty to decide the **strength** of penalty
+- introduce an additional hyperparameter that needs to be tuned
+- a multiplier to the penalty to decide the **strength** of penalty
 
 feature scaling
 ---------------
 
--   some ML models that rely on distance metrics (KNN) **require**
-    scaling to perform well
--   improves algo\'s like gradient descent that don\'t have the property
-    of scale invariance
--   features are on different scales, those on large scales take longer
-    to update
--   you want features to be roughly on the same scale
--   won\'t have an effect on regression/decision trees/random forest (no
+- some ML models that rely on distance metrics (KNN) **require** scaling to perform well
+- improves algo\'s like gradient descent that don\'t have the property of scale invariance
+- features are on different scales, those on large scales take longer to update
+- you want features to be roughly on the same scale
+- won\'t have an effect on regression/decision trees/random forest (no
     gradient descent)
 
-::: {.note}
-::: {.title}
-Note
-:::
 
 you will also have to scale new unseen data before feeding to the model
-:::
 
 normalization: scales all data values to be between 0 and 1
 
-``` {.}
+```
 X - Xmin
 X = -----------
 Xmax - Xmin
 ```
 
--   a .fit() call calculates the necessary stats (Xmin, Xmax, mean, std
+- a .fit() call calculates the necessary stats (Xmin, Xmax, mean, std
     dev)
--   a .transform() call scales data & returns the new scaled version of
+- a .transform() call scales data & returns the new scaled version of
     data
 
-::: {.warning}
-::: {.title}
 Warning
-:::
 
-| only **fit** to training data
-| calculating stat info should only come from training data
-| don\'t assume prior knowledge of the test set
-:::
+- only **fit** to training data
+- calculating stat info should only come from training data
+- don\'t assume prior knowledge of the test set
 
 using the full data set = **data leakage**
 
 feature scaling process:
 
-:   -   perform train test split
-    -   fit to TRAINING feature data
-    -   transform training feature data
-    -   transform test feature data
+- perform train test split
+- fit to TRAINING feature data
+- transform training feature data
+- transform test feature data
 
 don\'t scale the label
 
@@ -763,39 +735,32 @@ testing sets
 
 it\'s a way to train & evaluate on all the data
 
--   train model and get error metric for 1/K split eg 10%
--   repeat for another error metric 1/K split
--   keep repeating for all possible splits
--   you get **mean error = expected performance**
--   you get a better sense of true performance across multiple potential
-    splits
--   the cost = repeat computations K times
--   a common choice is K = 10 (K-fold cross-validation)
--   max K = K equal to nrows (leave on out cross-validation)
+- train model and get error metric for 1/K split eg 10%
+- repeat for another error metric 1/K split
+- keep repeating for all possible splits
+- you get **mean error = expected performance**
+- you get a better sense of true performance across multiple potential splits
+- the cost = repeat computations K times
+- a common choice is K = 10 (K-fold cross-validation)
+- max K = K equal to nrows (leave on out cross-validation)
 
 ensure data hasn\'t been influenced by/for hyperparameter tuning
 
-:   -   we use a **hold out** test set = remove a portion of data at
-        start that model will never see or be adjusted to
-    -   continue with classic train test split
-    -   OR do K-Fold cross validation
-    -   **after** training & tuning perform **final evaluation** hold
-        out test set
+- we use a **hold out** test set = remove a portion of data at start that model will never see or be adjusted to
+- continue with classic train test split
+- OR do K-Fold cross validation
+- **after** training & tuning perform **final evaluation** hold out test set
 
-::: {.warning}
-::: {.title}
 Warning
-:::
 
 you cannot tune after this final test evaluation!
-:::
 
 training data \| validation data (tuning hyperparams) \| test data
 
 data setup
 ----------
 
-``` {.python}
+```python
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -833,17 +798,14 @@ L1 reg LASSO regression
 
 L1 regularization adds penalty equal to the **absolute value** of the magnitude of coefficients:
 
-:   -   limits the size of the coefficients
-    -   can yield sparse models where some coefficients can become zero
-        (helps you decide)
-    -   can force some of the coeff estimates to be zero when tuning
-        lambda is large enough
-    -   similar to subset selection, LASSO performs variable selection
-    -   models are generally much easier to interpret
-    -   LassoCV operates on checking a \# of alphas within a range
-        instead of providing alphas directly
+- limits the size of the coefficients
+- can yield sparse models where some coefficients can become zero (helps you decide)
+- can force some of the coeff estimates to be zero when tuning lambda is large enough
+- similar to subset selection, LASSO performs variable selection
+- models are generally much easier to interpret
+- LassoCV operates on checking a \# of alphas within a range instead of providing alphas directly
 
-``` {.python}
+```python
 # Lasso Regression
 from sklearn.linear_model import LassoCV
 # https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LassoCV.html
@@ -875,28 +837,27 @@ print(lasso_cv_model.coef_)  # its only considering 2 features! ridge, all featu
 L2 reg Ridge regression
 -----------------------
 
--   ridge regression is a regularization technique (for linear
-    regression) that works by helping reduce the potential for
-    overfitting to the training data
--   by adding a penalty term to the error that is based on the squared
-    value of the coefficients
--   minimize error term RSS + penalty term
--   shrinkage penalty based off **coefficient²**
--   shrinkage penalty has a **tunable lambda parameter**
+- ridge regression is a regularization technique (for linear regression)
+  that works by helping reduce the potential for overfitting to the training data
+- by adding a penalty term to the error that is based on the squared
+  value of the coefficients
+- minimize error term RSS + penalty term
+- shrinkage penalty based off **coefficient²**
+- shrinkage penalty has a **tunable lambda parameter**
 
 ![image](../files/img/ml_ads_ridge_regression.png)
 
--   introduce a little more **bias** to significantly **reduce**
+- introduce a little more **bias** to significantly **reduce**
     variance
--   adding bias can help generalize ŷ= B₁x + B₀ (B₁ = slope of the line)
--   won\'t fit training data as well but fit unseen data better overall
--   use cross-validation to explore multiple lambda options & choose
+- adding bias can help generalize ŷ= B₁x + B₀ (B₁ = slope of the line)
+- won\'t fit training data as well but fit unseen data better overall
+- use cross-validation to explore multiple lambda options & choose
     best one
--   for cross-validation metrics, sklearn uses a **scorer object**
--   **higher** return values are **better** than lower return values for
+- for cross-validation metrics, sklearn uses a **scorer object**
+- **higher** return values are **better** than lower return values for
     scorer objects
 
-``` {.python}
+```python
 # Ridge Regression
 from sklearn.linear_model import Ridge
 ridge_model = Ridge(alpha=10)
@@ -922,7 +883,7 @@ print(MAE)
 
 ### choosing an alpha value with Cross-Validation
 
-``` {.python}
+```python
 from sklearn.linear_model import RidgeCV
 # help(RidgeCV)
 # Choosing a scoring: https://scikit-learn.org/stable/modules/model_evaluation.html
@@ -975,16 +936,16 @@ allowing certain coefficients to be outright forced to zero, eliminating
 them from the model Finally, Elastic Net combines the benefits of both
 lasso and ridge
 
--   $ŷ = B₁X₁+B₂X₂$ (case of only 2 features)
--   L1 constrains the sum of absolute values $|B|$
--   L2 contrains the sum of squared values B²
--   for some set of features the penalty will be less than sum of **s**
-    -   Lasso regression penalty: $|B₁| + |B₂| ≤ S$
-    -   Ridge regression penalty: $B₁² + B₂² ≤ S$
+- $ŷ = B₁X₁+B₂X₂$ (case of only 2 features)
+- L1 constrains the sum of absolute values $|B|$
+- L2 contrains the sum of squared values B²
+- for some set of features the penalty will be less than sum of **s**
+- Lasso regression penalty: $|B₁| + |B₂| ≤ S$
+- Ridge regression penalty: $B₁² + B₂² ≤ S$
 
 ![\"Image Citation: Zou, H., & Hastie, T. (2005)\"](../files/img/ml_ads_elastic_net_plot.png)
 
-``` {.python}
+```python
 ## Elastic Net
 Elastic Net combines the penalties of ridge regression and lasso in an attempt to get the best of both worlds!
 from sklearn.linear_model import ElasticNetCV
@@ -1047,5 +1008,3 @@ High biasLow variance:
 ![image](../files/img/ml_bias_variance_decision_route6.png)
 
 ![image](../files/img/ml_bias_variance_decision_route7.png)
-
-![image](../files/img/)
