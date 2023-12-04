@@ -9,9 +9,11 @@
   * [assert](python/assert.md)
   * [dataclass](python/dataclass.md)
   * [functional](python/functional.md)
+  * [fundamentals](python/fundamentals.md)
   * [generator](python/generator.md)
   * [regex](python/regex.md)
   * [testing](python/testing.md)
+  * [library](python/library.md)
 * [machine learning](ml/regression.md)
 * IAC
   * [ansible](IAC/ansible/ansible.md)

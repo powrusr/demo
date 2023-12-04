@@ -1,6 +1,5 @@
----
-title: regression
----
+# regression
+
 
 linear
 ======
