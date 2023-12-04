@@ -12,6 +12,7 @@
   * [generator](python/generator.md)
   * [regex](python/regex.md)
   * [testing](python/testing.md)
+* [machine learning](ml/regression.md)
 * IAC
   * [ansible](IAC/ansible/ansible.md)
 * vim
